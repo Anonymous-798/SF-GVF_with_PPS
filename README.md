@@ -90,6 +90,10 @@ The overview video is encoded without an audio stream and is configured to
 autoplay silently and loop. Playback rates `1`, `2`, and `4` are applied by the
 browser; separate accelerated copies are not required.
 
+The current overview is the web copy of `Video_rr.mp4` (4K, 30 fps, H.264).
+All 14 MP4 assets are distributed without audio streams; `muted` is also set
+on every video element. Query versions in the asset URLs refresh cached copies.
+
 Recommended encoding:
 
 ```bash
@@ -109,6 +113,9 @@ animations in `static/videos/path-following/`. A shared play/pause control,
 restart button, and time slider keep both methods and speed histories together.
 The unit-circle simulation displaces and holds the robot; its virtual coordinate
 continues to evolve under each method's own dynamics during the holds.
+These four animations were regenerated in MATLAB R2023a
+(`9.14.0.2206163`) at 25 fps for a 24 s simulation. Their H.264 video streams
+are copied without re-encoding into fast-start, audio-free web MP4 files.
 
 The matched Figure-eight experiment now uses Constant PPS `v_d = 4.0 m/s` and
 Curvature-Aware PPS `v_c = 4.0 m/s`. Its statistics over `[5,30] s` are copied

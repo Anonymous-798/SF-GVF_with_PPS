@@ -13,7 +13,7 @@ window.PAPER_SITE = {
 
   // Standalone videos outside the interactive experiment selector.
   videos: {
-    teaser: "static/videos/paper-overview.mp4",
+    teaser: "static/videos/paper-overview.mp4?v=rr-20261125",
     curvatureAware: "static/videos/experiments/figure-eight-curvature-vc6p00.mp4"
   },
 
