@@ -15,7 +15,7 @@
   <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans%7CNoto+Sans:400,600,700%7CCastoro">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans%7CNoto+Sans:400,600,700%7CCastoro&amp;display=swap">
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
 
@@ -110,11 +110,66 @@
       </div>
     </section>
 
-    <section class="section paper-section section-alt" id="flight-video-explorer" aria-labelledby="video-explorer-title">
+    <section class="section paper-section section-alt" id="path-following" aria-labelledby="path-following-title">
+      <div class="container is-max-desktop">
+        <h2 id="path-following-title" class="title is-3 section-title">Path Following or Trajectory Tracking?</h2>
+        <p class="section-lead centered-lead">
+          Prescribing physical speed does not prescribe an arrival time at each path point.
+          In our method, the guiding point $\boldsymbol f(w(t))$ responds to the robot's state:
+          the path error influences $\dot w$, allowing the point to slow down, stop, or move backward.
+          The baseline below uses the same physical velocity field but advances its virtual target
+          independently, with $\dot w=v_d(w)/\|\boldsymbol f'(w)\|$.
+        </p>
+        <div class="simulation-controls" role="group" aria-label="Synchronized simulation playback">
+          <button id="simulation-play" class="button selector-play-button" type="button">Play comparison</button>
+          <button id="simulation-restart" class="button" type="button">Restart</button>
+          <label for="simulation-time">Time</label>
+          <input id="simulation-time" type="range" min="0" max="24" step="0.04" value="0" aria-label="Simulation time in seconds">
+          <output id="simulation-clock" for="simulation-time">0.00 / 24.00 s</output>
+        </div>
+        <div class="simulation-grid">
+          <article class="simulation-card">
+            <h3>Proposed PPS SF-GVF</h3>
+            <div class="video-frame simulation-trajectory">
+              <video class="simulation-video" muted playsinline preload="metadata" aria-label="Proposed method trajectory animation">
+                <source src="static/videos/path-following/proposed_trajectory.mp4" type="video/mp4">
+              </video>
+            </div>
+            <video class="simulation-video simulation-speed" muted playsinline preload="metadata" aria-label="Proposed method prescribed speed history">
+              <source src="static/videos/path-following/proposed_vd_history.mp4" type="video/mp4">
+            </video>
+            <p>The guiding point approaches a stationary position while the robot is held still.</p>
+          </article>
+          <article class="simulation-card">
+            <h3>Independently Advancing Virtual Target</h3>
+            <div class="video-frame simulation-trajectory">
+              <video class="simulation-video" muted playsinline preload="metadata" aria-label="Virtual-target baseline trajectory animation">
+                <source src="static/videos/path-following/virtual_target_trajectory.mp4" type="video/mp4">
+              </video>
+            </div>
+            <video class="simulation-video simulation-speed" muted playsinline preload="metadata" aria-label="Virtual-target baseline prescribed speed history">
+              <source src="static/videos/path-following/virtual_target_vd_history.mp4" type="video/mp4">
+            </video>
+            <p>The virtual target continues along the path while the robot is held still.</p>
+          </article>
+        </div>
+        <p class="table-note">
+          Same unit circle, initial state and gains in both runs:
+          $\boldsymbol f(w)=[\cos w,\sin w]^\top$,
+          $v_d(w)=1+0.30\sin(w-\pi/4)\;\mathrm{m/s}$, and $K=1.2I_2$.
+          The robot is moved off the path during 8–9 s and held until 14 s;
+          it is moved back onto the circle during 14–15 s and held until 24 s.
+          The lower panels show the prescribed profile $v_d(w(t))$, not the speed of the virtual point.
+          This comparison illustrates state-dependent guiding-point evolution rather than a general comparison with all trajectory-tracking controllers.
+        </p>
+      </div>
+    </section>
+
+    <section class="section paper-section" id="flight-video-explorer" aria-labelledby="video-explorer-title">
       <div class="container is-max-desktop">
         <h2 id="video-explorer-title" class="title is-3 section-title">Interactive Flight Video Explorer</h2>
         <p class="section-lead centered-lead">
-          Select a desired path, a PPS profiles, and a playback rate. The displayed
+          Select a desired path, a PPS profile, and a playback rate. The displayed
           video changes only after <strong>Play Video</strong> is pressed.
         </p>
 
@@ -178,6 +233,8 @@
           Statistics are evaluated over $[5\,\mathrm{s},T]$, with
           $T=60,40,30,$ and $20\,\mathrm{s}$ for Clover, Helix,
           Figure “$\infty$”, and Ring, respectively.
+          For Figure “$\infty$”, the matched parameters are $v_d=4.0\,\mathrm{m/s}$
+          and $v_c=4.0\,\mathrm{m/s}$. Values are transcribed from the final video annotations.
         </p>
       </div>
     </section>
@@ -199,7 +256,7 @@
 
         <div class="table-container result-table-wrap paired-result-wrap">
           <table id="paper-table-ii" class="table is-fullwidth result-table paired-result-table paper-table-ii">
-            <caption>  Comparison of two experiments over $[5,15]\,\mathrm{s}$ for the 3D figure “$\infty$” path.</caption>
+            <caption>Comparison on the 3D figure “$\infty$” path over $[5,15]\,\mathrm{s}$:<br>Constant PPS ($v_d=4.0\,\mathrm{m/s}$) versus Curvature-Aware PPS ($v_c=6.0\,\mathrm{m/s}$).</caption>
             <thead>
               <tr>
                 <th scope="col">Metric</th>
@@ -211,25 +268,30 @@
             <tbody>
               <tr>
                 <td class="metric-name-cell">Mean Path Error (m)</td>
-                <td>0.205</td>
+                <td>0.157</td>
                 <td>0.134</td>
-                <td><span class="change-badge is-improvement">↓ 34.6%</span></td>
+                <td><span class="change-badge is-improvement">↓ 14.6%</span></td>
               </tr>
               <tr>
                 <td class="metric-name-cell">Saturation Time (s)</td>
-                <td>1.155</td>
+                <td>0.526</td>
                 <td>0.020</td>
-                <td><span class="change-badge is-improvement">↓ 98.3%</span></td>
+                <td><span class="change-badge is-improvement">↓ 96.2%</span></td>
               </tr>
               <tr>
                 <td class="metric-name-cell">Mean Speed (m/s)</td>
-                <td>4.406</td>
+                <td>3.930</td>
                 <td>4.693</td>
-                <td><span class="change-badge is-speed-change">↑ 6.5%</span></td>
+                <td><span class="change-badge is-speed-change">↑ 19.4%</span></td>
               </tr>
             </tbody>
           </table>
         </div>
+        <p class="table-note">
+          Values follow the comparison table in the revised manuscript. This comparison uses
+          different nominal speed parameters; it is separate from the matched-parameter
+          $[5,30]\,\mathrm{s}$ comparison above.
+        </p>
       </div>
     </section>
 

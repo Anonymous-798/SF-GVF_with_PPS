@@ -295,6 +295,66 @@
   }
 
 
+  function configureSimulation() {
+    const videos = Array.from(document.querySelectorAll('.simulation-video'));
+    const button = document.getElementById('simulation-play');
+    const restart = document.getElementById('simulation-restart');
+    const slider = document.getElementById('simulation-time');
+    const clock = document.getElementById('simulation-clock');
+    if (!videos.length || !button || !restart || !slider || !clock) return;
+    const master = videos[0];
+    let playing = false;
+    let generation = 0;
+    function pause() {
+      generation += 1;
+      playing = false;
+      videos.forEach(video => video.pause());
+      button.textContent = 'Play comparison';
+    }
+    function seek(time) {
+      const value = Math.max(0, Math.min(24, time));
+      videos.forEach(video => {
+        if (video.readyState > 0) video.currentTime = Math.min(value, video.duration);
+      });
+      slider.value = value;
+      clock.value = value.toFixed(2) + ' / 24.00 s';
+    }
+    async function play() {
+      const token = ++generation;
+      button.disabled = true;
+      try {
+        if (master.currentTime >= 23.99) seek(0);
+        await Promise.all(videos.map(video => video.play()));
+        if (token !== generation) return;
+        playing = true;
+        button.textContent = 'Pause comparison';
+      } catch (error) {
+        pause();
+        clock.value = 'Unable to play. Please retry.';
+      } finally {
+        button.disabled = false;
+      }
+    }
+    button.addEventListener('click', () => playing ? pause() : play());
+    restart.addEventListener('click', () => { pause(); seek(0); });
+    slider.addEventListener('input', () => { pause(); seek(Number(slider.value)); });
+    master.addEventListener('timeupdate', () => {
+      const time = Math.min(master.currentTime, 24);
+      slider.value = time;
+      clock.value = time.toFixed(2) + ' / 24.00 s';
+      if (playing) videos.slice(1).forEach(video => {
+        if (video.readyState > 0 && Math.abs(video.currentTime - time) > 0.15) video.currentTime = time;
+      });
+      if (time >= 24) pause();
+    });
+    master.addEventListener('ended', pause);
+    videos.forEach(video => video.addEventListener('error', () => {
+      pause();
+      clock.value = 'Video unavailable. Please reload.';
+    }));
+  }
+
+  configureSimulation();
   configureIdentity();
   configureLinks();
   configureVideos();

@@ -61,14 +61,14 @@ window.PAPER_SITE = {
       constant: {
         label: "Constant PPS",
         parameter: "v_d",
-        value: 4.5,
-        video: "static/videos/experiments/figure-eight-constant-vd4p50.mp4"
+        value: 4.0,
+        video: "static/videos/experiments/figure-eight-constant-vd4p00.mp4"
       },
       curvature: {
         label: "Curvature-Aware PPS",
         parameter: "v_c",
-        value: 4.5,
-        video: "static/videos/experiments/figure-eight-curvature-vc4p50.mp4"
+        value: 4.0,
+        video: "static/videos/experiments/figure-eight-curvature-vc4p00.mp4"
       }
     },
     ring: {
@@ -104,8 +104,8 @@ window.PAPER_SITE = {
     },
     figureEight: {
       timeEnd: 30,
-      constant: { meanPathError: 0.234, meanSpeed: 4.415, saturationTime: 3.924 },
-      curvature: { meanPathError: 0.118, meanSpeed: 4.054, saturationTime: 0.040 }
+      constant: { meanPathError: 0.145, meanSpeed: 3.936, saturationTime: 1.216 },
+      curvature: { meanPathError: 0.106, meanSpeed: 3.678, saturationTime: 0.000 }
     },
     ring: {
       timeEnd: 20,

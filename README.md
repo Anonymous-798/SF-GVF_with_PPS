@@ -67,8 +67,8 @@ static/videos/experiments/clover-constant-vd2p00.mp4
 static/videos/experiments/clover-curvature-vc2p00.mp4
 static/videos/experiments/helix-constant-vd3p00.mp4
 static/videos/experiments/helix-curvature-vc3p00.mp4
-static/videos/experiments/figure-eight-constant-vd4p50.mp4
-static/videos/experiments/figure-eight-curvature-vc4p50.mp4
+static/videos/experiments/figure-eight-constant-vd4p00.mp4
+static/videos/experiments/figure-eight-curvature-vc4p00.mp4
 static/videos/experiments/ring-constant-vd5p00.mp4
 static/videos/experiments/ring-curvature-vc5p00.mp4
 ```
@@ -103,6 +103,18 @@ Regular Git pushes accept files up to 100 MiB. Avoid Git LFS for files served
 directly by GitHub Pages.
 
 ## 4. Publish with GitHub Pages
+
+The `Path Following or Trajectory Tracking?` section uses four synchronized
+animations in `static/videos/path-following/`. A shared play/pause control,
+restart button, and time slider keep both methods and speed histories together.
+The unit-circle simulation displaces and holds the robot; its virtual coordinate
+continues to evolve under each method's own dynamics during the holds.
+
+The matched Figure-eight experiment now uses Constant PPS `v_d = 4.0 m/s` and
+Curvature-Aware PPS `v_c = 4.0 m/s`. Its statistics over `[5,30] s` are copied
+from the supplied videos' final annotations. The separate manuscript table uses
+`[5,15] s` and compares Constant PPS `v_d = 4.0 m/s` with Curvature-Aware PPS
+`v_c = 6.0 m/s`; do not mix these two windows or experiment pairs.
 
 1. Create a public GitHub repository.
 2. Upload the contents of this folder so `index.html` is at the repository root.
